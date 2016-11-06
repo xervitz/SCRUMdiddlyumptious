@@ -29,56 +29,90 @@ public class SearchGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        patientID = new javax.swing.JTextField();
         patientLastName = new javax.swing.JTextField();
         patientFirstName = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        patientID = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        patientID.setText("Patient ID");
-        patientID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientIDActionPerformed(evt);
-            }
-        });
-
-        patientLastName.setText("Last Name");
         patientLastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 patientLastNameActionPerformed(evt);
             }
         });
 
-        patientFirstName.setText("First Name");
+        patientFirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                patientFirstNameActionPerformed(evt);
+            }
+        });
 
         searchButton.setText("Search");
+        searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchButtonMouseClicked(evt);
+            }
+        });
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+
+        patientID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("00000000"))));
+        patientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                patientIDActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Patient ID");
+
+        jLabel2.setText("Last Name");
+
+        jLabel3.setText("First Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(patientID)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 315, Short.MAX_VALUE)
                         .addComponent(searchButton))
-                    .addComponent(patientID)
-                    .addComponent(patientLastName)
-                    .addComponent(patientFirstName))
+                    .addComponent(patientLastName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(patientFirstName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(patientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(9, 9, 9)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(patientLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(patientFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(searchButton)
                 .addContainerGap())
         );
@@ -86,13 +120,32 @@ public class SearchGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void patientLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientLastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_patientLastNameActionPerformed
+
     private void patientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_patientIDActionPerformed
 
-    private void patientLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientLastNameActionPerformed
+    private void patientFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientFirstNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_patientLastNameActionPerformed
+    }//GEN-LAST:event_patientFirstNameActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+        // TODO add your handling code here:
+        MHPage searchResult = null;
+        if(SearchController.findPage(searchResult, (int) patientID.getValue(), patientLastName.getText(), patientFirstName.getText())){
+            //page found in db
+            
+        } else {
+            //page not found
+        }
+    }//GEN-LAST:event_searchButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -130,8 +183,11 @@ public class SearchGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField patientFirstName;
-    private javax.swing.JTextField patientID;
+    private javax.swing.JFormattedTextField patientID;
     private javax.swing.JTextField patientLastName;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
