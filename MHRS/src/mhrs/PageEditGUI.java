@@ -105,6 +105,11 @@ public final class PageEditGUI extends javax.swing.JFrame {
         );
 
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,10 +171,16 @@ public final class PageEditGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+        PageViewGUI.main(page);
+        this.dispose();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
     /**
-     * @param args the command line arguments
+     * @param p
      */
-    public static void main(String args[]) {
+    public static void main(MHPage p) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -196,7 +207,7 @@ public final class PageEditGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PageEditGUI().setVisible(true);
+                new PageEditGUI(p).setVisible(true);
             }
         });
     }
