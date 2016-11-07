@@ -13,16 +13,19 @@ import java.util.ArrayList;
  * @author Benjamin
  */
 public class MHPage {
-    int ID;
-    String first;
-    String last;
+    final int ID;
+    final String first;
+    final String last;
     ArrayList<Condition> conditions;
     ArrayList<Procedure> procedures;
     ArrayList<FamilyMember> family;
-    public MHPage(int nID, String nFirst, String nLast){
+    public MHPage(int nID, String nFirst, String nLast) throws Exception{
+        if(nID < 0){
+            throw new Exception("ID out of bounds");
+        }
         ID = nID;
-        first = nFirst;
-        last = nLast;
+        first = nFirst.toUpperCase();
+        last = nLast.toUpperCase();
     }
     void setConditions(ArrayList<Condition> cond){
         conditions = cond;

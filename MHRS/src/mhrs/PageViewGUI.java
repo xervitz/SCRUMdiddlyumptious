@@ -117,6 +117,11 @@ public final class PageViewGUI extends javax.swing.JFrame {
         );
 
         editButton.setText("Edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,6 +182,12 @@ public final class PageViewGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+        PageEditGUI.main(page);
+        this.dispose();
+    }//GEN-LAST:event_editButtonActionPerformed
 
     /**
      * @param p

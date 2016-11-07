@@ -6,6 +6,9 @@
 
 package mhrs;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Benjamin
@@ -17,7 +20,14 @@ public class MHRS {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        SearchGUI.main(null);
+        //SearchGUI.main(null);
+        MHPage p = null;
+        try {
+            p = new MHPage(0, "John", "Smith");
+        } catch (Exception ex) {
+            Logger.getLogger(MHRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PageViewGUI.main(p);
     }
     
 }
