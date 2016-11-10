@@ -6,9 +6,12 @@
 
 package mhrs;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Benjamin
+ * @author Brian
  */
 public final class PageViewGUI extends javax.swing.JFrame {
     private MHPage page;
@@ -31,6 +34,35 @@ public final class PageViewGUI extends javax.swing.JFrame {
         patientName.setEditable(false);
         patientID.setText(String.format("%08d", page.ID));
         patientName.setText(page.last + ", " + page.first);
+        
+        conditionsPanel.setEditable(false);
+        proceduresPanel.setEditable(false);
+        familyPanel.setEditable(false);
+        
+        // fill in conditions, procedures, and familyMember sections
+        String conds   = new String();
+        String procs   = new String();
+        String famHist = new String();
+        for(int i = 0; i < page.conditions.size(); i++){
+            conds = String.format("%s%s:\n%s\n\n", conds, page.conditions.get(i).name, page.conditions.get(i).notes);
+        }
+        for(int i = 0; i < page.procedures.size(); i++){
+            procs = String.format("%s%s:\n", procs, page.procedures.get(i).name);
+            procs = String.format("%sOnDate: %s\n", procs, page.procedures.get(i).date.toString());
+            procs = String.format("%s%s\n\n", procs, page.procedures.get(i).notes);
+        }
+        for(int i = 0; i < page.family.size(); i++){
+            famHist = String.format("%s%s:\n", famHist, page.family.get(i).relationship);
+            ArrayList<Condition> memConds = page.family.get(i).conditions;
+            for(int j = 0; j < memConds.size(); j++){
+                famHist = String.format("%s%s\n%s\n", famHist, memConds.get(j).name, memConds.get(j).notes);
+            }
+            famHist = String.format("%s\n", famHist);
+        }
+        conditionsPanel.setText(conds);
+        proceduresPanel.setText(procs);
+        familyPanel.setText(famHist);
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,12 +81,15 @@ public final class PageViewGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        conditionsPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        proceduresPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        familyPanel = new javax.swing.JPanel();
         editButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        conditionsPanel = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        proceduresPanel = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        familyPanel = new javax.swing.JTextArea();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -79,42 +114,9 @@ public final class PageViewGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Conditions");
 
-        javax.swing.GroupLayout conditionsPanelLayout = new javax.swing.GroupLayout(conditionsPanel);
-        conditionsPanel.setLayout(conditionsPanelLayout);
-        conditionsPanelLayout.setHorizontalGroup(
-            conditionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        conditionsPanelLayout.setVerticalGroup(
-            conditionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
         jLabel4.setText("Procedures");
 
-        javax.swing.GroupLayout proceduresPanelLayout = new javax.swing.GroupLayout(proceduresPanel);
-        proceduresPanel.setLayout(proceduresPanelLayout);
-        proceduresPanelLayout.setHorizontalGroup(
-            proceduresPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        proceduresPanelLayout.setVerticalGroup(
-            proceduresPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
         jLabel5.setText("Family");
-
-        javax.swing.GroupLayout familyPanelLayout = new javax.swing.GroupLayout(familyPanel);
-        familyPanel.setLayout(familyPanelLayout);
-        familyPanelLayout.setHorizontalGroup(
-            familyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        familyPanelLayout.setVerticalGroup(
-            familyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
 
         editButton.setText("Edit");
         editButton.addActionListener(new java.awt.event.ActionListener() {
@@ -123,6 +125,18 @@ public final class PageViewGUI extends javax.swing.JFrame {
             }
         });
 
+        conditionsPanel.setColumns(20);
+        conditionsPanel.setRows(5);
+        jScrollPane2.setViewportView(conditionsPanel);
+
+        proceduresPanel.setColumns(20);
+        proceduresPanel.setRows(5);
+        jScrollPane4.setViewportView(proceduresPanel);
+
+        familyPanel.setColumns(20);
+        familyPanel.setRows(5);
+        jScrollPane5.setViewportView(familyPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,26 +144,23 @@ public final class PageViewGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(conditionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(proceduresPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(familyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(editButton)))
+                        .addComponent(editButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane5))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -165,17 +176,17 @@ public final class PageViewGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
+                .addGap(2, 2, 2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(conditionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(proceduresPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(familyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(2, 2, 2)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(editButton)
                 .addContainerGap())
         );
@@ -225,9 +236,9 @@ public final class PageViewGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel conditionsPanel;
+    private javax.swing.JTextArea conditionsPanel;
     private javax.swing.JButton editButton;
-    private javax.swing.JPanel familyPanel;
+    private javax.swing.JTextArea familyPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -235,9 +246,12 @@ public final class PageViewGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextPane patientID;
     private javax.swing.JTextPane patientName;
-    private javax.swing.JPanel proceduresPanel;
+    private javax.swing.JTextArea proceduresPanel;
     // End of variables declaration//GEN-END:variables
 }
