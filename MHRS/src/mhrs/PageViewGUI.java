@@ -15,7 +15,9 @@ import java.util.ArrayList;
  */
 public final class PageViewGUI extends javax.swing.JFrame {
     private MHPage page;
-
+    private enum Mode{VIEW, EDIT};
+    private Mode mode;
+    
     public void setPage(MHPage p){
         page = p;
     }
@@ -24,20 +26,36 @@ public final class PageViewGUI extends javax.swing.JFrame {
      */
     private PageViewGUI() {
         initComponents();
+        viewMode();
+    }
+    
+    private void editMode(){
+        mode = Mode.EDIT;
+        this.setTitle("Medical History Report System - Edit");
+        patientID.setEditable(false);
+        patientName.setEditable(false);
+        conditionsPanel.setEditable(true);
+        proceduresPanel.setEditable(true);
+        familyPanel.setEditable(true);
+        editButton.setText("Save");
+    }
+    
+    private void viewMode(){
+        mode = Mode.VIEW;
         this.setTitle("Medical History Report System - View");
+        patientID.setEditable(false);
+        patientName.setEditable(false);
+        conditionsPanel.setEditable(false);
+        proceduresPanel.setEditable(false);
+        familyPanel.setEditable(false);
+        editButton.setText("Edit");
     }
 
     public PageViewGUI(MHPage p){
         this();
         setPage(p);
-        patientID.setEditable(false);
-        patientName.setEditable(false);
         patientID.setText(String.format("%08d", page.ID));
         patientName.setText(page.last + ", " + page.first);
-        
-        conditionsPanel.setEditable(false);
-        proceduresPanel.setEditable(false);
-        familyPanel.setEditable(false);
         
         // fill in conditions, procedures, and familyMember sections
         String conds   = new String();
@@ -196,8 +214,8 @@ public final class PageViewGUI extends javax.swing.JFrame {
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
-        PageEditGUI.main(page);
-        this.dispose();
+        if(mode == Mode.VIEW)editMode();
+        else viewMode();
     }//GEN-LAST:event_editButtonActionPerformed
 
     /**
