@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author Benjamin
  */
 public class MHPage {
+    //the class to represent the pages searchable/editable in our system
     final int ID;
     final String first;
     final String last;

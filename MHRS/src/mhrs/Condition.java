@@ -11,6 +11,7 @@ package mhrs;
  * @author Benjamin
  */
 public final class Condition {
+    //represents a medical condition the patient has or has had
     String name;
     String notes;
     public Condition(){}

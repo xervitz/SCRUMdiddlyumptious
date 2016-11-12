@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author Benjamin
  */
 public final class FamilyMember {
+    //represents a member of the patient's family with relevant medical conditions
     String relationship;
     ArrayList<Condition> conditions;
     public FamilyMember(){}

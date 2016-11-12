@@ -12,6 +12,7 @@ import java.util.Date;
  * @author Benjamin
  */
 public final class Procedure {
+    //represents a medical procedure that has been completed
     String name;
     Date date;
     String notes;

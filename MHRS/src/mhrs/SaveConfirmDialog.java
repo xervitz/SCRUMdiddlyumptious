@@ -24,9 +24,12 @@ public class SaveConfirmDialog extends javax.swing.JDialog {
      * A return status code - returned if Cancel button has been pressed
      */
     public static final int RET_CANCEL = -1;
+    /**
+     * A return status code - returned if Discard button has been pressed
+     */
     public static final int RET_DISCARD = 0;
     /**
-     * A return status code - returned if OK button has been pressed
+     * A return status code - returned if Save button has been pressed
      */
     public static final int RET_SAVE = 1;
 
