@@ -10,10 +10,15 @@ package mhrs;
  *
  * @author Benjamin
  */
-public class Condition {
+public final class Condition {
     String name;
     String notes;
     public Condition(){}
+    public Condition(String a, String b){
+        this();
+        setName(a);
+        setNotes(b);
+    }
     void setName(String n){
         name = n;
     }

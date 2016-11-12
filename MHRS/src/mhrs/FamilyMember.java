@@ -12,10 +12,15 @@ import java.util.ArrayList;
  *
  * @author Benjamin
  */
-public class FamilyMember {
+public final class FamilyMember {
     String relationship;
     ArrayList<Condition> conditions;
     public FamilyMember(){}
+    public FamilyMember(String r, ArrayList<Condition> c){
+        this();
+        setRelationship(r);
+        setConditions(c);
+    }
     void setRelationship(String r){
         relationship = r;
     }

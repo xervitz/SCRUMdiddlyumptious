@@ -7,6 +7,9 @@
 package mhrs;
 
 import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -32,23 +35,25 @@ public final class PageViewGUI extends javax.swing.JFrame {
     private void editMode(){
         mode = Mode.EDIT;
         this.setTitle("Medical History Report System - Edit");
-        patientID.setEditable(false);
-        patientName.setEditable(false);
-        conditionsPanel.setEditable(true);
-        proceduresPanel.setEditable(true);
-        familyPanel.setEditable(true);
         editButton.setText("Save");
+        if(conditionTable.isEditing())conditionTable.getCellEditor().stopCellEditing();
+        conditionTable.clearSelection();
+        if(procedureTable.isEditing())procedureTable.getCellEditor().stopCellEditing();
+        procedureTable.clearSelection();
+        if(familyTable.isEditing())familyTable.getCellEditor().stopCellEditing();
+        familyTable.clearSelection();
     }
     
     private void viewMode(){
         mode = Mode.VIEW;
         this.setTitle("Medical History Report System - View");
-        patientID.setEditable(false);
-        patientName.setEditable(false);
-        conditionsPanel.setEditable(false);
-        proceduresPanel.setEditable(false);
-        familyPanel.setEditable(false);
         editButton.setText("Edit");
+        if(conditionTable.isEditing())conditionTable.getCellEditor().stopCellEditing();
+        conditionTable.clearSelection();
+        if(procedureTable.isEditing())procedureTable.getCellEditor().stopCellEditing();
+        procedureTable.clearSelection();
+        if(familyTable.isEditing())familyTable.getCellEditor().stopCellEditing();
+        familyTable.clearSelection();
     }
 
     public PageViewGUI(MHPage p){
@@ -56,31 +61,36 @@ public final class PageViewGUI extends javax.swing.JFrame {
         setPage(p);
         patientID.setText(String.format("%08d", page.ID));
         patientName.setText(page.last + ", " + page.first);
-        
+        patientID.setEnabled(false);
+        patientName.setEnabled(false);
         // fill in conditions, procedures, and familyMember sections
-        String conds   = new String();
-        String procs   = new String();
-        String famHist = new String();
+        DefaultTableModel condModel = (DefaultTableModel)conditionTable.getModel();
+        DefaultTableModel procModel = (DefaultTableModel)procedureTable.getModel();
+        DefaultTableModel famModel = (DefaultTableModel)familyTable.getModel();
         for(int i = 0; i < page.conditions.size(); i++){
-            conds = String.format("%s%s:\n%s\n\n", conds, page.conditions.get(i).name, page.conditions.get(i).notes);
+            condModel.addRow(new Object[] {page.conditions.get(i).name, page.conditions.get(i).notes});
         }
+        int totWidth = conditionTable.getBounds().width;
+        int prefWidth = totWidth/3;
+        System.out.println(prefWidth);
+        TableColumnModel condColModel = conditionTable.getColumnModel();
+        condColModel.getColumn(0).setPreferredWidth(prefWidth);
+        condColModel.getColumn(1).setPreferredWidth(totWidth - prefWidth);
         for(int i = 0; i < page.procedures.size(); i++){
-            procs = String.format("%s%s:\n", procs, page.procedures.get(i).name);
-            procs = String.format("%sOnDate: %s\n", procs, page.procedures.get(i).date.toString());
-            procs = String.format("%s%s\n\n", procs, page.procedures.get(i).notes);
+            procModel.addRow(new Object[] {page.procedures.get(i).name, page.procedures.get(i).date.toString(), page.procedures.get(i).notes});
         }
         for(int i = 0; i < page.family.size(); i++){
-            famHist = String.format("%s%s:\n", famHist, page.family.get(i).relationship);
+//            famHist = String.format("%s%s:\n", famHist, page.family.get(i).relationship);
+//            ArrayList<Condition> memConds = page.family.get(i).conditions;
+//            for(int j = 0; j < memConds.size(); j++){
+//                famHist = String.format("%s%s\n%s\n", famHist, memConds.get(j).name, memConds.get(j).notes);
+//            }
+//            famHist = String.format("%s\n", famHist);
             ArrayList<Condition> memConds = page.family.get(i).conditions;
             for(int j = 0; j < memConds.size(); j++){
-                famHist = String.format("%s%s\n%s\n", famHist, memConds.get(j).name, memConds.get(j).notes);
+                famModel.addRow(new Object[] {page.family.get(i).relationship, memConds.get(j).name, memConds.get(j).notes});
             }
-            famHist = String.format("%s\n", famHist);
         }
-        conditionsPanel.setText(conds);
-        proceduresPanel.setText(procs);
-        familyPanel.setText(famHist);
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,12 +112,12 @@ public final class PageViewGUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         editButton = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        conditionsPanel = new javax.swing.JTextArea();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        proceduresPanel = new javax.swing.JTextArea();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        familyPanel = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        procedureTable = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        familyTable = new javax.swing.JTable();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        conditionTable = new javax.swing.JTable();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,17 +153,71 @@ public final class PageViewGUI extends javax.swing.JFrame {
             }
         });
 
-        conditionsPanel.setColumns(20);
-        conditionsPanel.setRows(5);
-        jScrollPane2.setViewportView(conditionsPanel);
+        procedureTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        proceduresPanel.setColumns(20);
-        proceduresPanel.setRows(5);
-        jScrollPane4.setViewportView(proceduresPanel);
+            },
+            new String [] {
+                "Name", "Date", "Notes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
 
-        familyPanel.setColumns(20);
-        familyPanel.setRows(5);
-        jScrollPane5.setViewportView(familyPanel);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int row, int col){
+                return (mode == Mode.EDIT);
+            }
+        });
+        jScrollPane6.setViewportView(procedureTable);
+
+        familyTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Relationship", "Condition Name", "Condition Notes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int row, int col){
+                return (mode == Mode.EDIT);
+            }
+        });
+        jScrollPane7.setViewportView(familyTable);
+
+        conditionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Notes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int row, int column){
+                return (mode == Mode.EDIT);
+            }
+        });
+        jScrollPane8.setViewportView(conditionTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,23 +226,29 @@ public final class PageViewGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(editButton))
+                        .addGap(0, 936, Short.MAX_VALUE)
+                        .addComponent(editButton)
+                        .addGap(17, 17, 17))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jScrollPane5))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(jLabel3))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -194,17 +264,17 @@ public final class PageViewGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(2, 2, 2)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addGap(1, 1, 1)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addGap(2, 2, 2)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(editButton)
                 .addContainerGap())
         );
@@ -254,9 +324,9 @@ public final class PageViewGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea conditionsPanel;
+    javax.swing.JTable conditionTable;
     private javax.swing.JButton editButton;
-    private javax.swing.JTextArea familyPanel;
+    private javax.swing.JTable familyTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -264,12 +334,12 @@ public final class PageViewGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextPane patientID;
     private javax.swing.JTextPane patientName;
-    private javax.swing.JTextArea proceduresPanel;
+    private javax.swing.JTable procedureTable;
     // End of variables declaration//GEN-END:variables
 }

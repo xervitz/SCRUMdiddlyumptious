@@ -11,11 +11,17 @@ import java.util.Date;
  *
  * @author Benjamin
  */
-public class Procedure {
+public final class Procedure {
     String name;
     Date date;
     String notes;
     public Procedure(){}
+    public Procedure(String a, Date b, String c){
+        this();
+        setName(a);
+        setDate(b);
+        setNotes(c);
+    }
     void setName(String n){
         name = n;
     }
