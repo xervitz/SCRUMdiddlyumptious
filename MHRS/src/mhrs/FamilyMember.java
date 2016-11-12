@@ -21,6 +21,12 @@ public final class FamilyMember {
         setRelationship(r);
         setConditions(c);
     }
+    public FamilyMember(FamilyMember f){
+        ArrayList<Condition> cond = new ArrayList<>();
+        for(Condition c:f.conditions)cond.add(new Condition(c));
+        setRelationship(f.relationship);
+        setConditions(cond);
+    }
     void setRelationship(String r){
         relationship = r;
     }

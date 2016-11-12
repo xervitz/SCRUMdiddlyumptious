@@ -22,6 +22,9 @@ public final class Procedure {
         setDate(b);
         setNotes(c);
     }
+    public Procedure(Procedure p){
+        this(p.name, (Date)p.date.clone(), p.notes);
+    }
     void setName(String n){
         name = n;
     }

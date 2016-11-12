@@ -7,7 +7,9 @@
 package mhrs;
 
 import java.util.ArrayList;
-import javax.swing.table.AbstractTableModel;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -17,12 +19,42 @@ import javax.swing.table.TableColumnModel;
  * @author Brian
  */
 public final class PageViewGUI extends javax.swing.JFrame {
-    private MHPage page;
+    private MHPage page, prev;
     private enum Mode{VIEW, EDIT};
     private Mode mode;
     
     public void setPage(MHPage p){
         page = p;
+        try {
+            prev = new MHPage(p);
+        } catch (Exception ex) {
+            Logger.getLogger(PageViewGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        patientID.setText(String.format("%08d", page.ID));
+        patientName.setText(page.last + ", " + page.first);
+        patientID.setEnabled(false);
+        patientName.setEnabled(false);
+        // fill in conditions, procedures, and familyMember sections
+        DefaultTableModel condModel = (DefaultTableModel)conditionTable.getModel();
+        DefaultTableModel procModel = (DefaultTableModel)procedureTable.getModel();
+        DefaultTableModel famModel = (DefaultTableModel)familyTable.getModel();
+        for(int i = 0; i < page.conditions.size(); i++){
+            condModel.addRow(new Object[] {page.conditions.get(i).name, page.conditions.get(i).notes});
+        }
+        int totWidth = conditionTable.getBounds().width;
+        int prefWidth = totWidth/3;
+        TableColumnModel condColModel = conditionTable.getColumnModel();
+        condColModel.getColumn(0).setPreferredWidth(prefWidth);
+        condColModel.getColumn(1).setPreferredWidth(totWidth - prefWidth);
+        for(int i = 0; i < page.procedures.size(); i++){
+            procModel.addRow(new Object[] {page.procedures.get(i).name, page.procedures.get(i).date, page.procedures.get(i).notes});
+        }
+        for(int i = 0; i < page.family.size(); i++){
+            ArrayList<Condition> memConds = page.family.get(i).conditions;
+            for(int j = 0; j < memConds.size(); j++){
+                famModel.addRow(new Object[] {page.family.get(i).relationship, memConds.get(j).name, memConds.get(j).notes});
+            }
+        }
     }
     /**
      * Creates new form PageViewGUI
@@ -56,41 +88,35 @@ public final class PageViewGUI extends javax.swing.JFrame {
         familyTable.clearSelection();
     }
 
-    public PageViewGUI(MHPage p){
-        this();
-        setPage(p);
-        patientID.setText(String.format("%08d", page.ID));
-        patientName.setText(page.last + ", " + page.first);
-        patientID.setEnabled(false);
-        patientName.setEnabled(false);
-        // fill in conditions, procedures, and familyMember sections
+    private boolean updatePage(){
         DefaultTableModel condModel = (DefaultTableModel)conditionTable.getModel();
         DefaultTableModel procModel = (DefaultTableModel)procedureTable.getModel();
         DefaultTableModel famModel = (DefaultTableModel)familyTable.getModel();
-        for(int i = 0; i < page.conditions.size(); i++){
-            condModel.addRow(new Object[] {page.conditions.get(i).name, page.conditions.get(i).notes});
+        ArrayList<Condition> cond = new ArrayList<>();
+        ArrayList<Procedure> proc = new ArrayList<>();
+        ArrayList<FamilyMember> fam = new ArrayList<>();
+        for(int i = 0; i < condModel.getRowCount(); i++){
+            cond.add(new Condition((String)condModel.getValueAt(i, 0), (String)condModel.getValueAt(i, 1)));
         }
-        int totWidth = conditionTable.getBounds().width;
-        int prefWidth = totWidth/3;
-        System.out.println(prefWidth);
-        TableColumnModel condColModel = conditionTable.getColumnModel();
-        condColModel.getColumn(0).setPreferredWidth(prefWidth);
-        condColModel.getColumn(1).setPreferredWidth(totWidth - prefWidth);
-        for(int i = 0; i < page.procedures.size(); i++){
-            procModel.addRow(new Object[] {page.procedures.get(i).name, page.procedures.get(i).date.toString(), page.procedures.get(i).notes});
+        for(int i = 0; i < procModel.getRowCount(); i++){
+            Date date = new Date();
+            proc.add(new Procedure((String)procModel.getValueAt(i, 0), (Date)procModel.getValueAt(i, 1), (String)procModel.getValueAt(i, 2)));
         }
-        for(int i = 0; i < page.family.size(); i++){
-//            famHist = String.format("%s%s:\n", famHist, page.family.get(i).relationship);
-//            ArrayList<Condition> memConds = page.family.get(i).conditions;
-//            for(int j = 0; j < memConds.size(); j++){
-//                famHist = String.format("%s%s\n%s\n", famHist, memConds.get(j).name, memConds.get(j).notes);
-//            }
-//            famHist = String.format("%s\n", famHist);
-            ArrayList<Condition> memConds = page.family.get(i).conditions;
-            for(int j = 0; j < memConds.size(); j++){
-                famModel.addRow(new Object[] {page.family.get(i).relationship, memConds.get(j).name, memConds.get(j).notes});
-            }
+        for(int i = 0; i < famModel.getRowCount(); i++){
+            String relationship = (String)famModel.getValueAt(i, 0);
+            ArrayList<Condition> famCond = new ArrayList<>();
+            famCond.add(new Condition((String)famModel.getValueAt(i, 1), (String)famModel.getValueAt(i, 2)));
+            fam.add(new FamilyMember(relationship, famCond));
         }
+        page.setConditions(cond);
+        page.setProcedures(proc);
+        page.setFamily(fam);
+        return true;
+    }
+    
+    public PageViewGUI(MHPage p){
+        this();
+        setPage(p);   
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -162,7 +188,7 @@ public final class PageViewGUI extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.util.Date.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -283,9 +309,23 @@ public final class PageViewGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-        if(mode == Mode.VIEW)editMode();
-        else viewMode();
+        if(mode == Mode.EDIT){
+            SaveConfirmDialog saveConf = new SaveConfirmDialog(this, true);
+            saveConf.main(null);
+            switch(saveConf.getReturnStatus()){
+                case SaveConfirmDialog.RET_SAVE:
+                    viewMode();
+                    updatePage();
+                    return;
+                case SaveConfirmDialog.RET_DISCARD:
+                    initComponents();
+                    setPage(prev);
+                    viewMode();
+                default:
+                    return;
+            }
+            
+        } else if(mode == Mode.VIEW)editMode();
     }//GEN-LAST:event_editButtonActionPerformed
 
     /**

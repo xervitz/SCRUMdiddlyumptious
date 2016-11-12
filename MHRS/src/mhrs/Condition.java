@@ -19,6 +19,11 @@ public final class Condition {
         setName(a);
         setNotes(b);
     }
+    public Condition(Condition c){
+        this();
+        setName(c.name);
+        setNotes(c.notes);
+    }
     void setName(String n){
         name = n;
     }

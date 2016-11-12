@@ -27,13 +27,32 @@ public class MHPage {
         first = nFirst.toUpperCase();
         last = nLast.toUpperCase();
     }
-    void setConditions(ArrayList<Condition> cond){
+
+    MHPage(MHPage p) throws Exception {
+        this(p.ID, p.first, p.last);
+        ArrayList<Condition> cond = new ArrayList<>();
+        p.conditions.stream().forEach((c) -> {
+            cond.add(new Condition(c));
+        });
+        setConditions(cond);
+        ArrayList<Procedure> proc = new ArrayList<>();
+        p.procedures.stream().forEach((pr) -> {
+            proc.add(new Procedure(pr));
+        });
+        setProcedures(p.procedures);
+        ArrayList<FamilyMember> fam = new ArrayList<>();
+        p.family.stream().forEach((f) -> {
+            fam.add(new FamilyMember(f));
+        });
+        setFamily(p.family);
+    }
+    final void setConditions(ArrayList<Condition> cond){
         conditions = cond;
     }
-    void setProcedures(ArrayList<Procedure> proc){
+    final void setProcedures(ArrayList<Procedure> proc){
         procedures = proc;
     }
-    void setFamily(ArrayList<FamilyMember> fam){
+    final void setFamily(ArrayList<FamilyMember> fam){
         family = fam;
     }
 }
