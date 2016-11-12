@@ -155,7 +155,7 @@ public class SaveConfirmDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
     
     private void doClose(int retStatus) {

@@ -19,14 +19,19 @@ import javax.swing.table.TableColumnModel;
  * @author Brian
  */
 public final class PageViewGUI extends javax.swing.JFrame {
+
+    private static PageViewGUI instance;
+    private static PageViewGUI getInstance() {
+        return instance;
+    }
     private MHPage page, prev;
     private enum Mode{VIEW, EDIT};
     private Mode mode;
     
     public void setPage(MHPage p){
-        page = p;
+        prev = p;
         try {
-            prev = new MHPage(p);
+            page = new MHPage(p);
         } catch (Exception ex) {
             Logger.getLogger(PageViewGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -38,6 +43,9 @@ public final class PageViewGUI extends javax.swing.JFrame {
         DefaultTableModel condModel = (DefaultTableModel)conditionTable.getModel();
         DefaultTableModel procModel = (DefaultTableModel)procedureTable.getModel();
         DefaultTableModel famModel = (DefaultTableModel)familyTable.getModel();
+        while(condModel.getRowCount()!=0)condModel.removeRow(condModel.getRowCount()-1);
+        while(procModel.getRowCount()!=0)procModel.removeRow(procModel.getRowCount()-1);
+        while(famModel.getRowCount()!=0)famModel.removeRow(famModel.getRowCount()-1);
         for(int i = 0; i < page.conditions.size(); i++){
             condModel.addRow(new Object[] {page.conditions.get(i).name, page.conditions.get(i).notes});
         }
@@ -62,6 +70,7 @@ public final class PageViewGUI extends javax.swing.JFrame {
     private PageViewGUI() {
         initComponents();
         viewMode();
+        instance = this;
     }
     
     private void editMode(){
@@ -111,6 +120,8 @@ public final class PageViewGUI extends javax.swing.JFrame {
         page.setConditions(cond);
         page.setProcedures(proc);
         page.setFamily(fam);
+        prev = page;
+        //TODO: store prev in database
         return true;
     }
     
@@ -311,23 +322,36 @@ public final class PageViewGUI extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         if(mode == Mode.EDIT){
             SaveConfirmDialog saveConf = new SaveConfirmDialog(this, true);
-            saveConf.main(null);
+            saveConf.setVisible(true);
             switch(saveConf.getReturnStatus()){
                 case SaveConfirmDialog.RET_SAVE:
                     viewMode();
                     updatePage();
                     return;
                 case SaveConfirmDialog.RET_DISCARD:
-                    initComponents();
-                    setPage(prev);
                     viewMode();
+                    setPage(prev);
                 default:
-                    return;
             }
             
         } else if(mode == Mode.VIEW)editMode();
     }//GEN-LAST:event_editButtonActionPerformed
 
+    private void exitWithDialog(){
+        if(mode == Mode.EDIT){
+            SaveConfirmDialog saveConf = new SaveConfirmDialog(this, true);
+            saveConf.setVisible(true);
+            switch(saveConf.getReturnStatus()){
+                case SaveConfirmDialog.RET_SAVE:
+                    updatePage();
+                    System.exit(0);
+                case SaveConfirmDialog.RET_DISCARD:
+                    setPage(prev);
+                    System.exit(0);
+                default:
+            }
+        } else if(mode == Mode.VIEW)System.exit(0);
+    }
     /**
      * @param p
      */
@@ -357,8 +381,17 @@ public final class PageViewGUI extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new PageViewGUI(p).setVisible(true);
+                if(PageViewGUI.getInstance()==null)instance = new PageViewGUI(p);
+                PageViewGUI.getInstance().setDefaultCloseOperation(PageViewGUI.DO_NOTHING_ON_CLOSE);
+                PageViewGUI.getInstance().addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        PageViewGUI.getInstance().exitWithDialog();
+                    }
+                });
+                PageViewGUI.getInstance().setVisible(true);
             }
         });
     }
