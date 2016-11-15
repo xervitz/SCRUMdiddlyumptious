@@ -22,7 +22,7 @@ public class MHRS {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //SearchGUI.main(null);
+        SearchGUI.main(null);
         //To test the edit functions, create some dummy objects and pass to the pageviewer
         MHPage p = null;
         try {
@@ -56,6 +56,6 @@ public class MHRS {
             Logger.getLogger(MHRS.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(1);
         }
-        PageViewGUI.main(p);
+        //PageViewGUI.main(p);
     }
 }

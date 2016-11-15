@@ -15,6 +15,8 @@ import java.awt.Toolkit;
  */
 public class SearchGUI extends javax.swing.JFrame {
 
+    private static final int idSize = 8;
+    
     /**
      * Creates new form GUI
      */
@@ -44,15 +46,15 @@ public class SearchGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        patientLastName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientLastNameActionPerformed(evt);
+        patientLastName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                patientLastNameKeyTyped(evt);
             }
         });
 
-        patientFirstName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientFirstNameActionPerformed(evt);
+        patientFirstName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                patientFirstNameKeyTyped(evt);
             }
         });
 
@@ -69,9 +71,9 @@ public class SearchGUI extends javax.swing.JFrame {
         });
 
         patientID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("00000000"))));
-        patientID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientIDActionPerformed(evt);
+        patientID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                patientIDKeyTyped(evt);
             }
         });
 
@@ -125,18 +127,6 @@ public class SearchGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void patientLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientLastNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patientLastNameActionPerformed
-
-    private void patientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patientIDActionPerformed
-
-    private void patientFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientFirstNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patientFirstNameActionPerformed
-
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
@@ -152,6 +142,30 @@ public class SearchGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchButtonMouseClicked
 
+    private void patientLastNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientLastNameKeyTyped
+        if(isAlpha(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_patientLastNameKeyTyped
+
+    private void patientIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientIDKeyTyped
+        if(isSize(patientID.getText()) || "1234567890".indexOf(evt.getKeyChar()) == -1) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_patientIDKeyTyped
+    private boolean isSize(String s) {
+        return (s.length() + 1) > idSize;
+    }
+    private void patientFirstNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientFirstNameKeyTyped
+        if(isAlpha(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_patientFirstNameKeyTyped
+    
+    private boolean isAlpha(char c) {
+        return "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".indexOf(c) == -1;
+    }
+    
     /**
      * @param args the command line arguments
      */
