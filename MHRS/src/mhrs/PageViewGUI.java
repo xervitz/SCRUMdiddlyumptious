@@ -77,6 +77,7 @@ public final class PageViewGUI extends javax.swing.JFrame {
         instance = this; //store reference for use in static methods
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2); //centers frame on screen
+        this.setResizable(false);
     }
     
     private void editMode(){

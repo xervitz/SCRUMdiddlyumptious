@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package mhrs;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,7 +21,7 @@ import javax.swing.JOptionPane;
 public class SearchGUI extends javax.swing.JFrame {
 
     private static final int idSize = 8;
-    
+
     /**
      * Creates new form GUI
      */
@@ -25,7 +29,7 @@ public class SearchGUI extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Medical History Report System - Search");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2); //centers frame on screen
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2); //centers frame on screen
     }
 
     /**
@@ -125,16 +129,45 @@ public class SearchGUI extends javax.swing.JFrame {
 
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         MHPage searchResult = null;
-        if(patientID.isEnabled()) {
-            //Search Database for Patient ID
-        }
-        else if(!patientID.isEnabled()) {
+        if (patientID.isEnabled()) {
+            MHPage p = null;
+            try {
+                p = new MHPage(0, "John", "Smith");
+                ArrayList<Condition> cond = new ArrayList<>();
+                ArrayList<Procedure> proc = new ArrayList<>();
+                ArrayList<FamilyMember> fam = new ArrayList<>();
+
+                //uncomment below for some example objects, or fill in the blank form manually
+                cond.add(new Condition("Tinnitus", "keep away from loud noises"));
+                cond.add(new Condition("Depression", "keep away from memes"));
+                cond.add(new Condition("Heat Vision", "keep sunglasses on at all times"));
+
+                proc.add(new Procedure("Vasectomy", Date.from(Instant.now()), "went smoothly"));
+                proc.add(new Procedure("Heart Surgery", Date.from(Instant.EPOCH), "just barely survived"));
+
+                ArrayList<Condition> cond1 = new ArrayList<>();
+                cond1.add(new Condition("Testicular Cancer", "o no"));
+                cond1.add(new Condition("Rabies", "from kissing his dog"));
+
+                ArrayList<Condition> cond2 = new ArrayList<>();
+                cond2.add(new Condition("Stanky Leg", "ooh watch me, watch me\n now watch me whip\n now watch me nay-nay"));
+                fam.add(new FamilyMember("Father", cond1));
+                fam.add(new FamilyMember("Son", cond2));
+
+                p.setConditions(cond);
+                p.setProcedures(proc);
+                p.setFamily(fam);
+            } catch (Exception ex) {
+                Logger.getLogger(MHRS.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(1);
+            }
+            PageViewGUI.main(p);
+            this.setVisible(false);
+        } else if (!patientID.isEnabled()) {
             //Search Database with first and last name (Do we need to require both?)
-        }
-        else if(patientID.getText().equals("") && patientLastName.getText().equals("") && patientFirstName.getText().equals("")) {
+        } else if (patientID.getText().equals("") && patientLastName.getText().equals("") && patientFirstName.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "No text entered", "Blank Search Values", JOptionPane.ERROR_MESSAGE);
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "ID/First/Last name not found in database", "Patient Not Found", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_searchButtonMouseClicked
@@ -144,14 +177,14 @@ public class SearchGUI extends javax.swing.JFrame {
         String last = patientLastName.getText();
         int i = evt.getExtendedKeyCode();
         char c = evt.getKeyChar();
-        
-        if(last.equals("") && i != 8 && isAlpha(c)) {
+
+        if (last.equals("") && i != 8 && isAlpha(c)) {
             patientID.setEnabled(false);
         }
-        if(last.length() == 0 && i == 8 && first.equals("")) {
+        if (last.length() == 0 && i == 8 && first.equals("")) {
             patientID.setEnabled(true);
         }
-        if(!isAlpha(c)) {
+        if (!isAlpha(c)) {
             evt.consume();
         }
     }//GEN-LAST:event_patientLastNameKeyTyped
@@ -160,15 +193,15 @@ public class SearchGUI extends javax.swing.JFrame {
         String text = patientID.getText();
         int i = evt.getExtendedKeyCode();
         char c = evt.getKeyChar();
-        
-        if(text.equals("") && i != 8 && isNum(c)) {
+
+        if (text.equals("") && i != 8 && isNum(c)) {
             patientFirstName.setEnabled(false);
             patientLastName.setEnabled(false);
         }
-        if(isSize(text) || !isNum(c)) {
+        if (isSize(text) || !isNum(c)) {
             evt.consume();
         }
-        if(text.length() == 0 && i == 8) {
+        if (text.length() == 0 && i == 8) {
             patientFirstName.setEnabled(true);
             patientLastName.setEnabled(true);
         }
@@ -179,30 +212,36 @@ public class SearchGUI extends javax.swing.JFrame {
         String last = patientLastName.getText();
         int i = evt.getExtendedKeyCode();
         char c = evt.getKeyChar();
-        
-        if(first.equals("") && i != 8 && isAlpha(c)) {
+
+        if (first.equals("") && i != 8 && isAlpha(c)) {
             patientID.setEnabled(false);
         }
-        if(first.length() == 0 && i == 8 && last.equals("")) {
+        if (first.length() == 0 && i == 8 && last.equals("")) {
             patientID.setEnabled(true);
         }
-        if(!isAlpha(c)) {
+        if (!isAlpha(c)) {
             evt.consume();
         }
     }//GEN-LAST:event_patientFirstNameKeyTyped
-    
+
     private boolean isAlpha(char c) {
         return "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".indexOf(c) != -1;
     }
-    
+
     private boolean isSize(String s) {
         return (s.length() + 1) > idSize;
     }
-        
+
     private boolean isNum(char c) {
         return "1234567890".indexOf(c) != -1;
     }
-    
+
+    private MHPage spawnGhostPage() {
+        MHPage test = new MHPage(0000000, "John", "Smith");
+
+        return test;
+    }
+
     /**
      * @param args the command line arguments
      */

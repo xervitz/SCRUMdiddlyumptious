@@ -20,10 +20,7 @@ public class MHPage {
     ArrayList<Condition> conditions;
     ArrayList<Procedure> procedures;
     ArrayList<FamilyMember> family;
-    public MHPage(int nID, String nFirst, String nLast) throws Exception{
-        if(nID < 0){
-            throw new Exception("ID out of bounds");
-        }
+    public MHPage(int nID, String nFirst, String nLast){
         ID = nID;
         first = nFirst.toUpperCase();
         last = nLast.toUpperCase();
