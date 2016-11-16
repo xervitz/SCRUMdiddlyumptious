@@ -8,6 +8,7 @@ package mhrs;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -62,11 +63,6 @@ public class SearchGUI extends javax.swing.JFrame {
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 searchButtonMouseClicked(evt);
-            }
-        });
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
             }
         });
 
@@ -127,43 +123,84 @@ public class SearchGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
-
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-        // TODO add your handling code here:
         MHPage searchResult = null;
-        if(SearchController.findPage(searchResult, (int) patientID.getValue(), patientLastName.getText(), patientFirstName.getText())){
-            //page found in db
-            
-        } else {
-            //page not found
+        if(patientID.isEnabled()) {
+            //Search Database for Patient ID
+        }
+        else if(!patientID.isEnabled()) {
+            //Search Database with first and last name (Do we need to require both?)
+        }
+        else if(patientID.getText().equals("") && patientLastName.getText().equals("") && patientFirstName.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "No text entered", "Blank Search Values", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "ID/First/Last name not found in database", "Patient Not Found", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_searchButtonMouseClicked
 
     private void patientLastNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientLastNameKeyTyped
-        if(isAlpha(evt.getKeyChar())) {
+        String first = patientFirstName.getText();
+        String last = patientLastName.getText();
+        int i = evt.getExtendedKeyCode();
+        char c = evt.getKeyChar();
+        
+        if(last.equals("") && i != 8 && isAlpha(c)) {
+            patientID.setEnabled(false);
+        }
+        if(last.length() == 0 && i == 8 && first.equals("")) {
+            patientID.setEnabled(true);
+        }
+        if(!isAlpha(c)) {
             evt.consume();
         }
     }//GEN-LAST:event_patientLastNameKeyTyped
 
     private void patientIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientIDKeyTyped
-        if(isSize(patientID.getText()) || "1234567890".indexOf(evt.getKeyChar()) == -1) {
+        String text = patientID.getText();
+        int i = evt.getExtendedKeyCode();
+        char c = evt.getKeyChar();
+        
+        if(text.equals("") && i != 8 && isNum(c)) {
+            patientFirstName.setEnabled(false);
+            patientLastName.setEnabled(false);
+        }
+        if(isSize(text) || !isNum(c)) {
             evt.consume();
         }
+        if(text.length() == 0 && i == 8) {
+            patientFirstName.setEnabled(true);
+            patientLastName.setEnabled(true);
+        }
     }//GEN-LAST:event_patientIDKeyTyped
-    private boolean isSize(String s) {
-        return (s.length() + 1) > idSize;
-    }
+
     private void patientFirstNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientFirstNameKeyTyped
-        if(isAlpha(evt.getKeyChar())) {
+        String first = patientFirstName.getText();
+        String last = patientLastName.getText();
+        int i = evt.getExtendedKeyCode();
+        char c = evt.getKeyChar();
+        
+        if(first.equals("") && i != 8 && isAlpha(c)) {
+            patientID.setEnabled(false);
+        }
+        if(first.length() == 0 && i == 8 && last.equals("")) {
+            patientID.setEnabled(true);
+        }
+        if(!isAlpha(c)) {
             evt.consume();
         }
     }//GEN-LAST:event_patientFirstNameKeyTyped
     
     private boolean isAlpha(char c) {
-        return "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".indexOf(c) == -1;
+        return "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".indexOf(c) != -1;
+    }
+    
+    private boolean isSize(String s) {
+        return (s.length() + 1) > idSize;
+    }
+        
+    private boolean isNum(char c) {
+        return "1234567890".indexOf(c) != -1;
     }
     
     /**
