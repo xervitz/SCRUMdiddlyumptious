@@ -14,36 +14,34 @@ import java.util.ArrayList;
  */
 public class MHPage {
     //the class to represent the pages searchable/editable in our system
-    final int ID;
-    final String first;
-    final String last;
+    long ID;
+    String first;
+    String last;
     ArrayList<Condition> conditions;
     ArrayList<Procedure> procedures;
     ArrayList<FamilyMember> family;
-    public MHPage(int nID, String nFirst, String nLast){
+    public MHPage(long nID, String nFirst, String nLast){
         ID = nID;
         first = nFirst.toUpperCase();
         last = nLast.toUpperCase();
+        conditions = new ArrayList<>();
+        procedures = new ArrayList<>();
+        family = new ArrayList<>();
     }
 
-    MHPage(MHPage p) throws Exception {
+    public MHPage(MHPage p) {
         this(p.ID, p.first, p.last);
-        ArrayList<Condition> cond = new ArrayList<>();
         p.conditions.stream().forEach((c) -> {
-            cond.add(new Condition(c));
+            conditions.add(new Condition(c));
         });
-        setConditions(cond);
-        ArrayList<Procedure> proc = new ArrayList<>();
         p.procedures.stream().forEach((pr) -> {
-            proc.add(new Procedure(pr));
+            procedures.add(new Procedure(pr));
         });
-        setProcedures(p.procedures);
-        ArrayList<FamilyMember> fam = new ArrayList<>();
         p.family.stream().forEach((f) -> {
-            fam.add(new FamilyMember(f));
+            family.add(new FamilyMember(f));
         });
-        setFamily(p.family);
     }
+    
     final void setConditions(ArrayList<Condition> cond){
         conditions = cond;
     }

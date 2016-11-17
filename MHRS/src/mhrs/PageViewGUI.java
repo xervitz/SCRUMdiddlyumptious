@@ -80,6 +80,11 @@ public final class PageViewGUI extends javax.swing.JFrame {
         this.setResizable(false);
     }
     
+    public PageViewGUI(MHPage p){
+        this();
+        setPage(p);   
+    }
+    
     private void editMode(){
         //enable editing for editable fields
         //note that ID and name are not editable
@@ -147,10 +152,7 @@ public final class PageViewGUI extends javax.swing.JFrame {
         return true;
     }
     
-    public PageViewGUI(MHPage p){
-        this();
-        setPage(p);   
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -418,13 +420,21 @@ public final class PageViewGUI extends javax.swing.JFrame {
             switch(saveConf.getReturnStatus()){
                 case SaveConfirmDialog.RET_SAVE:
                     updatePage();
-                    System.exit(0);
+                    //System.exit(0);
+                    SearchGUI.main(null);
+                    this.dispose();
                 case SaveConfirmDialog.RET_DISCARD:
                     setPage(prev);
-                    System.exit(0);
+                    //System.exit(0);
+                    SearchGUI.main(null);
+                    this.dispose();
                 default:
             }
-        } else if(mode == Mode.VIEW)System.exit(0);
+        } else if(mode == Mode.VIEW){
+            //System.exit(0);
+            SearchGUI.main(null);
+            this.dispose();
+        }
     }
     /**
      * @param p
@@ -457,7 +467,7 @@ public final class PageViewGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if(PageViewGUI.getInstance()==null)instance = new PageViewGUI(p);
+                instance = new PageViewGUI(p);
                 //use our custom exit code when X is clicked
                 PageViewGUI.getInstance().setDefaultCloseOperation(PageViewGUI.DO_NOTHING_ON_CLOSE);
                 PageViewGUI.getInstance().addWindowListener(new java.awt.event.WindowAdapter() {
