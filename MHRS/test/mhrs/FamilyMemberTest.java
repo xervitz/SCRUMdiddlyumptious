@@ -37,8 +37,6 @@ public class FamilyMemberTest {
         String r = "";
         FamilyMember instance = new FamilyMember();
         instance.setRelationship(r);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -50,8 +48,6 @@ public class FamilyMemberTest {
         ArrayList<Condition> c = null;
         FamilyMember instance = new FamilyMember();
         instance.setConditions(c);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

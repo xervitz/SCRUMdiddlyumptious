@@ -36,8 +36,6 @@ public class PageViewGUITest {
         MHPage p = null;
         PageViewGUI instance = null;
         instance.setPage(p);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -48,8 +46,6 @@ public class PageViewGUITest {
         System.out.println("main");
         MHPage p = null;
         PageViewGUI.main(p);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

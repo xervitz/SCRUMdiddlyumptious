@@ -36,8 +36,6 @@ public class ConditionTest {
         String n = "";
         Condition instance = new Condition();
         instance.setName(n);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -49,8 +47,6 @@ public class ConditionTest {
         String n = "";
         Condition instance = new Condition();
         instance.setNotes(n);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

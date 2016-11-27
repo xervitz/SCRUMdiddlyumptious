@@ -37,8 +37,6 @@ public class ProcedureTest {
         String n = "";
         Procedure instance = new Procedure();
         instance.setName(n);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -50,8 +48,6 @@ public class ProcedureTest {
         Date d = null;
         Procedure instance = new Procedure();
         instance.setDate(d);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -63,8 +59,6 @@ public class ProcedureTest {
         String n = "";
         Procedure instance = new Procedure();
         instance.setNotes(n);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

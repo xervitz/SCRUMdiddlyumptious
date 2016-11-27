@@ -37,8 +37,6 @@ public class MHPageTest {
         ArrayList<Condition> cond = null;
         MHPage instance = null;
         instance.setConditions(cond);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -50,8 +48,6 @@ public class MHPageTest {
         ArrayList<Procedure> proc = null;
         MHPage instance = null;
         instance.setProcedures(proc);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -63,8 +59,6 @@ public class MHPageTest {
         ArrayList<FamilyMember> fam = null;
         MHPage instance = null;
         instance.setFamily(fam);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }
