@@ -17,6 +17,8 @@ import static org.junit.Assert.*;
  */
 public class MHPageTest {
     
+    MHPage instance = new MHPage(0, "", "");
+    
     public MHPageTest() {
     }
     
@@ -35,7 +37,6 @@ public class MHPageTest {
     public void testSetConditions() {
         System.out.println("setConditions");
         ArrayList<Condition> cond = null;
-        MHPage instance = null;
         instance.setConditions(cond);
     }
 
@@ -46,7 +47,6 @@ public class MHPageTest {
     public void testSetProcedures() {
         System.out.println("setProcedures");
         ArrayList<Procedure> proc = null;
-        MHPage instance = null;
         instance.setProcedures(proc);
     }
 
@@ -57,7 +57,6 @@ public class MHPageTest {
     public void testSetFamily() {
         System.out.println("setFamily");
         ArrayList<FamilyMember> fam = null;
-        MHPage instance = null;
         instance.setFamily(fam);
     }
     

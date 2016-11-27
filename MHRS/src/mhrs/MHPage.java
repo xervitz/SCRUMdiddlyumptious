@@ -21,6 +21,7 @@ public class MHPage {
     ArrayList<Procedure> procedures;
     ArrayList<FamilyMember> family;
     public MHPage(long nID, String nFirst, String nLast){
+        if(nFirst == null || nLast == null) throw new NullPointerException();
         ID = nID;
         first = nFirst.toUpperCase();
         last = nLast.toUpperCase();

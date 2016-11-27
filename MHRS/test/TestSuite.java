@@ -14,9 +14,7 @@ import org.junit.runners.Suite;
 import mhrs.ConditionTest;
 import mhrs.FamilyMemberTest;
 import mhrs.MHPageTest;
-import mhrs.PageViewGUITest;
 import mhrs.ProcedureTest;
-import mhrs.SaveConfirmDialogTest;
 
 /**
  *
@@ -27,9 +25,7 @@ import mhrs.SaveConfirmDialogTest;
     ConditionTest.class,
     FamilyMemberTest.class,
     MHPageTest.class,
-    PageViewGUITest.class,
     ProcedureTest.class,
-    SaveConfirmDialogTest.class
 })
 public class TestSuite {
 
