@@ -13,8 +13,10 @@ import org.junit.Test;
 
 
 /**
- *
+ * 
  * @author Brian Bell-Williard
+ * @author Joseph Kurzman
+ * @author Phil Basnage
  */
 public class TestJUnit {
     // TestJUnit Condition class
@@ -81,40 +83,49 @@ public class TestJUnit {
         MHPage p1 = new MHPage((long)9001, "joe", "bob");
         PageViewGUI pvg = new PageViewGUI(p0);
         pvg.setPage(p1);
+    }
+    
+    @Test
+    public void testSaveConfirmDialogGetReturnStatus(){
         
     }
     
     @Test
-    public void testPageViewGUIEditMode(){
-        MHPage p0 = new MHPage((long)9000, "bob", "joe");
-        PageViewGUI pvg = new PageViewGUI(p0);
-        pvg.editMode();
-        System.out.println("should be in edit mode.");
+    public void testSaveConfirmDialogDoClose(){
+        
     }
     
-    @Test
-    public void testPageViewGUIViewMode(){
-        MHPage p0 = new MHPage((long)9000, "bob", "joe");
-        PageViewGUI pvg = new PageViewGUI(p0);
-        pvg.viewMode();
-        System.out.println("should be in view mode.");
-    }
-    
-    @Test
-    public void testPageViewGUIUpdatePage(){
-        MHPage p0 = new MHPage((long)9000, "bob", "joe");
-        PageViewGUI pvg = new PageViewGUI(p0);
-        boolean b = pvg.updatePage();
-        System.out.println("should have updated page.");
-    }
-    
-    @Test
-    public void testPageViewGUIExitWithDialog(){
-        MHPage p0 = new MHPage((long)9000, "bob", "joe");
-        PageViewGUI pvg = new PageViewGUI(p0);
-        pvg.exitWithDialog();
-        System.out.println("should have exited with dialog.");
-    }
+//    @Test
+//    public void testPageViewGUIEditMode(){
+//        MHPage p0 = new MHPage((long)9000, "bob", "joe");
+//        PageViewGUI pvg = new PageViewGUI(p0);
+//        pvg.editMode();
+//        System.out.println("should be in edit mode.");
+//    }
+//    
+//    @Test
+//    public void testPageViewGUIViewMode(){
+//        MHPage p0 = new MHPage((long)9000, "bob", "joe");
+//        PageViewGUI pvg = new PageViewGUI(p0);
+//        pvg.viewMode();
+//        System.out.println("should be in view mode.");
+//    }
+//    
+//    @Test
+//    public void testPageViewGUIUpdatePage(){
+//        MHPage p0 = new MHPage((long)9000, "bob", "joe");
+//        PageViewGUI pvg = new PageViewGUI(p0);
+//        boolean b = pvg.updatePage();
+//        System.out.println("should have updated page.");
+//    }
+//    
+//    @Test
+//    public void testPageViewGUIExitWithDialog(){
+//        MHPage p0 = new MHPage((long)9000, "bob", "joe");
+//        PageViewGUI pvg = new PageViewGUI(p0);
+//        pvg.exitWithDialog();
+//        System.out.println("should have exited with dialog.");
+//    }
     
     @Test
     public void testProcudureSetName(){
