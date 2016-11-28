@@ -52,7 +52,8 @@ public class ConditionTest {
         assertEquals(q , instance.name);
         instance.setName(r);
         assertEquals(r , instance.name);
-        
+        instance.setName(null);
+        assertEquals(null, instance.name);
     }
 
     /**
@@ -80,6 +81,8 @@ public class ConditionTest {
         assertEquals(q , instance.notes);
         instance.setNotes(r);
         assertEquals(r , instance.notes);
+        instance.setNotes(null);
+        assertEquals(null, instance.notes);
     }
     
 }

@@ -56,6 +56,8 @@ public class FamilyMemberTest {
         assertEquals(r , instance.relationship);
         instance.setRelationship(s);
         assertEquals(s , instance.relationship);
+        instance.setRelationship(null);
+        assertEquals(null, instance.relationship);
     }
 
     /**
@@ -76,30 +78,32 @@ public class FamilyMemberTest {
         Condition p = new Condition("This is a longer string.", "This is a longer string.");
         Condition q = new Condition("Joe Bob", "Joe Bob");
         Condition r = new Condition(";',./", ";',./");
-        ArrayList<Condition> cond1 = null;
+        ArrayList<Condition> cond1 = new ArrayList<>();
         cond1.add(n);
         instance.setConditions(cond1);
         assertEquals(cond1, instance.conditions);
-        ArrayList<Condition> cond2 = null;
+        ArrayList<Condition> cond2 = new ArrayList<>();
         cond2.add(m);
         instance.setConditions(cond2);
         assertEquals(cond2, instance.conditions);
-        ArrayList<Condition> cond3 = null;
+        ArrayList<Condition> cond3 = new ArrayList<>();
         cond3.add(o);
         instance.setConditions(cond3);
         assertEquals(cond3, instance.conditions);
-        ArrayList<Condition> cond4 = null;
+        ArrayList<Condition> cond4 = new ArrayList<>();
         cond4.add(p);
         instance.setConditions(cond4);
         assertEquals(cond4, instance.conditions);
-        ArrayList<Condition> cond5 = null;
+        ArrayList<Condition> cond5 = new ArrayList<>();
         cond5.add(q);
         instance.setConditions(cond5);
         assertEquals(cond5, instance.conditions);
-        ArrayList<Condition> cond6 = null;
+        ArrayList<Condition> cond6 = new ArrayList<>();
         cond6.add(r);
         instance.setConditions(cond6);
         assertEquals(cond6, instance.conditions);
+        instance.setConditions(null);
+        assertEquals(null, instance.conditions);
     }
     
 }

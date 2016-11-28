@@ -6,6 +6,7 @@
 package mhrs;
 
 import java.util.ArrayList;
+import java.util.Date;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,32 +46,32 @@ public class MHPageTest {
         Condition p = new Condition("This is a longer string.", "This is a longer string.");
         Condition q = new Condition("Joe Bob", "Joe Bob");
         Condition r = new Condition(";',./", ";',./");
-        ArrayList<Condition> cond1 = null;
+        ArrayList<Condition> cond1 = new ArrayList<>();
         cond1.add(n);
         instance.setConditions(cond1);
         assertEquals(cond1, instance.conditions);
-        ArrayList<Condition> cond2 = null;
+        ArrayList<Condition> cond2 = new ArrayList<>();
         cond2.add(m);
         instance.setConditions(cond2);
         assertEquals(cond2, instance.conditions);
-        ArrayList<Condition> cond3 = null;
+        ArrayList<Condition> cond3 = new ArrayList<>();
         cond3.add(o);
         instance.setConditions(cond3);
         assertEquals(cond3, instance.conditions);
-        ArrayList<Condition> cond4 = null;
+        ArrayList<Condition> cond4 = new ArrayList<>();
         cond4.add(p);
         instance.setConditions(cond4);
         assertEquals(cond4, instance.conditions);
-        ArrayList<Condition> cond5 = null;
+        ArrayList<Condition> cond5 = new ArrayList<>();
         cond5.add(q);
         instance.setConditions(cond5);
         assertEquals(cond5, instance.conditions);
-        ArrayList<Condition> cond6 = null;
+        ArrayList<Condition> cond6 = new ArrayList<>();
         cond6.add(r);
         instance.setConditions(cond6);
         assertEquals(cond6, instance.conditions);
-        
-        
+        instance.setConditions(null);
+        assertEquals(null, instance.conditions);
     }
 
     /**
@@ -79,9 +80,17 @@ public class MHPageTest {
     @Test
     public void testSetProcedures() {
         System.out.println("setProcedures");
-        ArrayList<Procedure> proc = null;
+        ArrayList<Procedure> proc = new ArrayList<>();
+        Procedure p = new Procedure();
+        p.setName("");
+        p.setNotes("");
+        p.setDate(new Date());
+        proc.add(p);
         instance.setProcedures(proc);
         assertEquals(proc, instance.procedures);
+        assertEquals(p, instance.procedures.get(0));
+        instance.setProcedures(null);
+        assertEquals(null, instance.procedures);
     }
 
     /**
@@ -105,24 +114,39 @@ public class MHPageTest {
         String v = "This is a longer string.";
         String w = "Joe Bob";
         String x = ";',./";
-        ArrayList<Condition> cond1 = null;
+        ArrayList<Condition> cond1 = new ArrayList<>();
         cond1.add(n);
         FamilyMember a = new FamilyMember(s, cond1);
-        ArrayList<Condition> cond2 = null;
+        assertEquals(s, a.relationship);
+        assertEquals(n, a.conditions.get(0));
+        ArrayList<Condition> cond2 = new ArrayList<>();
         cond2.add(m);
         FamilyMember b = new FamilyMember(t, cond2);
-        ArrayList<Condition> cond3 = null;
+        assertEquals(t, b.relationship);
+        assertEquals(m, b.conditions.get(0));
+        ArrayList<Condition> cond3 = new ArrayList<>();
         cond3.add(o);
         FamilyMember c = new FamilyMember(u, cond3);
-        ArrayList<Condition> cond4 = null;
+        assertEquals(u, c.relationship);
+        assertEquals(o, c.conditions.get(0));
+        ArrayList<Condition> cond4 = new ArrayList<>();
         cond4.add(p);
         FamilyMember d = new FamilyMember(v, cond4);
-        ArrayList<Condition> cond5 = null;
+        assertEquals(v, d.relationship);
+        assertEquals(p, d.conditions.get(0));
+        ArrayList<Condition> cond5 = new ArrayList<>();
         cond5.add(q);
         FamilyMember e = new FamilyMember(w, cond5);
-        ArrayList<Condition> cond6 = null;
+        assertEquals(w, e.relationship);
+        assertEquals(q, e.conditions.get(0));
+        ArrayList<Condition> cond6 = new ArrayList<>();
         cond6.add(q);
         FamilyMember f = new FamilyMember(x, cond6);
+        assertEquals(x, f.relationship);
+        assertEquals(q, f.conditions.get(0));
+        FamilyMember g = new FamilyMember(null, null);
+        assertEquals(null, g.conditions);
+        assertEquals(null, g.relationship);
     }
     
 }

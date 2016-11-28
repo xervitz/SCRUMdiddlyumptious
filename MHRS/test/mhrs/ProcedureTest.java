@@ -53,6 +53,8 @@ public class ProcedureTest {
         assertEquals(q , instance.name);
         instance.setName(r);
         assertEquals(r , instance.name);
+        instance.setName(null);
+        assertEquals(null, instance.name);
     }
 
     /**
@@ -65,6 +67,8 @@ public class ProcedureTest {
         Procedure instance = new Procedure();
         instance.setDate(d);
         assertEquals(d, instance.date);
+        instance.setDate(null);
+        assertEquals(null, instance.date);
     }
 
     /**
@@ -92,6 +96,8 @@ public class ProcedureTest {
         assertEquals(q , instance.notes);
         instance.setNotes(r);
         assertEquals(r , instance.notes);
+        instance.setNotes(null);
+        assertEquals(null, instance.notes);
     }
     
 }
