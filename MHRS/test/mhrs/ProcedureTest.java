@@ -35,8 +35,24 @@ public class ProcedureTest {
     public void testSetName() {
         System.out.println("setName");
         String n = "";
+        String m = "1";
+        String o = "IASDG193712";
+        String p = "This is a longer string.";
+        String q = "Joe Bob";
+        String r = ";',./";
         Procedure instance = new Procedure();
         instance.setName(n);
+        assertEquals(n , instance.name);
+        instance.setName(m);
+        assertEquals(m , instance.name);
+        instance.setName(o);
+        assertEquals(o , instance.name);
+        instance.setName(p);
+        assertEquals(p , instance.name);
+        instance.setName(q);
+        assertEquals(q , instance.name);
+        instance.setName(r);
+        assertEquals(r , instance.name);
     }
 
     /**
@@ -48,6 +64,7 @@ public class ProcedureTest {
         Date d = null;
         Procedure instance = new Procedure();
         instance.setDate(d);
+        assertEquals(d, instance.date);
     }
 
     /**
@@ -57,8 +74,24 @@ public class ProcedureTest {
     public void testSetNotes() {
         System.out.println("setNotes");
         String n = "";
+        String m = "1";
+        String o = "IASDG193712";
+        String p = "This is a longer string.";
+        String q = "Joe Bob";
+        String r = ";',./";
         Procedure instance = new Procedure();
         instance.setNotes(n);
+        assertEquals(n , instance.notes);
+        instance.setNotes(m);
+        assertEquals(m , instance.notes);
+        instance.setNotes(o);
+        assertEquals(o , instance.notes);
+        instance.setNotes(p);
+        assertEquals(p , instance.notes);
+        instance.setNotes(q);
+        assertEquals(q , instance.notes);
+        instance.setNotes(r);
+        assertEquals(r , instance.notes);
     }
     
 }
