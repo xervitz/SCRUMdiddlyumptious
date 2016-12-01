@@ -16,6 +16,7 @@ import static mhrs.SearchController.findPage;
  */
 public class SearchGUI extends javax.swing.JFrame {
 
+    private static boolean DEBUG = false;
     private static final int idSize = 8;
 
     /**
@@ -129,14 +130,19 @@ public class SearchGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No text entered", "Blank Search Values", JOptionPane.ERROR_MESSAGE);
         } else {
             //user entered some criteria
-            Long ID = new Long(patientID.getText());
+            Integer ID = -1;
+            if(!patientID.getText().isEmpty()) ID = new Integer(patientID.getText());
             String first = patientFirstName.getText();
             String last = patientLastName.getText();
-            MHPage result = findPage(ID.longValue(), first, last);
+            MHPage result = findPage(ID.intValue(), first, last);
             if(result != null){
                 //page found, view it   
                 PageViewGUI.main(result);
-                //this.setVisible(false);
+                this.dispose();
+            } else if(DEBUG){
+                //disregard the results and create a new page to save
+                result = new MHPage(ID, first, last);
+                PageViewGUI.main(result);
                 this.dispose();
             } else {
                 //page missing, create it if desired   
@@ -183,6 +189,10 @@ public class SearchGUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        //uncomment to enable database inserts
+        //DEBUG = true;
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

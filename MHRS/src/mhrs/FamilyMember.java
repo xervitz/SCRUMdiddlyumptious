@@ -6,13 +6,14 @@
 
 package mhrs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Benjamin
  */
-public final class FamilyMember {
+public final class FamilyMember implements Serializable{
     //represents a member of the patient's family with relevant medical conditions
     String relationship;
     ArrayList<Condition> conditions;

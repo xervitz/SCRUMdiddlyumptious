@@ -29,6 +29,7 @@ public final class PageViewGUI extends javax.swing.JFrame {
     private MHPage page, prev;
     private enum Mode{VIEW, EDIT};
     private Mode mode;
+    private static boolean DEBUG = false;
     
     public void setPage(MHPage p){
         //set the page data field, display its contents in GUI
@@ -148,8 +149,8 @@ public final class PageViewGUI extends javax.swing.JFrame {
         page.setProcedures(proc);
         page.setFamily(fam);
         setPage(page);
-        //TODO: store prev in database, return update success
-        return true;
+        //store prev in database, return update success
+        return SearchController.updatePage(prev) > 0;
     }
     
 
@@ -420,18 +421,15 @@ public final class PageViewGUI extends javax.swing.JFrame {
             switch(saveConf.getReturnStatus()){
                 case SaveConfirmDialog.RET_SAVE:
                     updatePage();
-                    //System.exit(0);
                     SearchGUI.main(null);
                     this.dispose();
                 case SaveConfirmDialog.RET_DISCARD:
                     setPage(prev);
-                    //System.exit(0);
                     SearchGUI.main(null);
                     this.dispose();
                 default:
             }
         } else if(mode == Mode.VIEW){
-            //System.exit(0);
             SearchGUI.main(null);
             this.dispose();
         }
@@ -440,6 +438,10 @@ public final class PageViewGUI extends javax.swing.JFrame {
      * @param p
      */
     public static void main(MHPage p) {
+        
+        //uncomment to enable database inserts
+        //DEBUG = true;
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

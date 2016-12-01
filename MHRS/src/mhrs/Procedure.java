@@ -5,13 +5,14 @@
  */
 
 package mhrs;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Benjamin
  */
-public final class Procedure {
+public final class Procedure implements Serializable{
     //represents a medical procedure that has been completed
     String name;
     Date date;

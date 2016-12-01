@@ -6,11 +6,13 @@
 
 package mhrs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Benjamin
  */
-public final class Condition {
+public final class Condition implements Serializable{
     //represents a medical condition the patient has or has had
     String name;
     String notes;

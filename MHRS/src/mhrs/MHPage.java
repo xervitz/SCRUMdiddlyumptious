@@ -6,21 +6,22 @@
 
 package mhrs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Benjamin
  */
-public class MHPage {
+public class MHPage implements Serializable {
     //the class to represent the pages searchable/editable in our system
-    long ID;
+    int ID;
     String first;
     String last;
     ArrayList<Condition> conditions;
     ArrayList<Procedure> procedures;
     ArrayList<FamilyMember> family;
-    public MHPage(long nID, String nFirst, String nLast){
+    public MHPage(int nID, String nFirst, String nLast){
         if(nFirst == null || nLast == null) throw new NullPointerException();
         ID = nID;
         first = nFirst.toUpperCase();
