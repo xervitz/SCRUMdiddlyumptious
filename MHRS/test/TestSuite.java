@@ -15,6 +15,7 @@ import mhrs.ConditionTest;
 import mhrs.FamilyMemberTest;
 import mhrs.MHPageTest;
 import mhrs.ProcedureTest;
+import mhrs.SearchController;
 
 /**
  *
@@ -26,6 +27,7 @@ import mhrs.ProcedureTest;
     FamilyMemberTest.class,
     MHPageTest.class,
     ProcedureTest.class,
+    SearchController.class
 })
 public class TestSuite {
 
