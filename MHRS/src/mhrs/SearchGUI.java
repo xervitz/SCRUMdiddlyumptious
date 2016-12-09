@@ -52,11 +52,17 @@ public class SearchGUI extends javax.swing.JFrame {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 patientLastNameKeyTyped(evt);
             }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                patientLastNameKeyPressed(evt);
+            }
         });
 
         patientFirstName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 patientFirstNameKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                patientFirstNameKeyPressed(evt);
             }
         });
 
@@ -71,6 +77,9 @@ public class SearchGUI extends javax.swing.JFrame {
         patientID.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 patientIDKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                patientIDKeyPressed(evt);
             }
         });
 
@@ -125,30 +134,7 @@ public class SearchGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-        if (patientID.getText().isEmpty() && patientLastName.getText().isEmpty() && patientFirstName.getText().isEmpty()) {
-            //user entered no criteria
-            JOptionPane.showMessageDialog(this, "No text entered", "Blank Search Values", JOptionPane.ERROR_MESSAGE);
-        } else {
-            //user entered some criteria
-            Integer ID = -1;
-            if(!patientID.getText().isEmpty()) ID = new Integer(patientID.getText());
-            String first = patientFirstName.getText();
-            String last = patientLastName.getText();
-            MHPage result = findPage(ID.intValue(), first, last);
-            if(result != null){
-                //page found, view it   
-                PageViewGUI.main(result);
-                this.dispose();
-            } else if(DEBUG){
-                //disregard the results and create a new page to save
-                result = new MHPage(ID, first, last);
-                PageViewGUI.main(result);
-                this.dispose();
-            } else {
-                //page missing, create it if desired   
-                JOptionPane.showMessageDialog(this, "ID/First/Last name not found in database", "Patient Not Found", JOptionPane.ERROR_MESSAGE);
-            }
-        } 
+         search();
     }//GEN-LAST:event_searchButtonMouseClicked
 
     private void patientLastNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientLastNameKeyTyped
@@ -173,6 +159,51 @@ public class SearchGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_patientFirstNameKeyTyped
 
+    private void patientIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientIDKeyPressed
+        if(evt.getKeyCode() == 10) {
+            search();
+        }
+    }//GEN-LAST:event_patientIDKeyPressed
+
+    private void patientLastNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientLastNameKeyPressed
+        if(evt.getKeyCode() == 10) {
+            search();
+        }
+    }//GEN-LAST:event_patientLastNameKeyPressed
+
+    private void patientFirstNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_patientFirstNameKeyPressed
+        if(evt.getKeyCode() == 10) {
+            search();
+        }
+    }//GEN-LAST:event_patientFirstNameKeyPressed
+    
+    private void search() {
+        if (patientID.getText().isEmpty() && patientLastName.getText().isEmpty() && patientFirstName.getText().isEmpty()) {
+            //user entered no criteria
+            JOptionPane.showMessageDialog(this, "No text entered", "Blank Search Values", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //user entered some criteria
+            Integer ID = -1;
+            if(!patientID.getText().isEmpty()) ID = new Integer(patientID.getText());
+            String first = patientFirstName.getText();
+            String last = patientLastName.getText();
+            MHPage result = findPage(ID.intValue(), first, last);
+            if(result != null){
+                //page found, view it   
+                PageViewGUI.main(result);
+                this.dispose();
+            } else if(DEBUG){
+                //disregard the results and create a new page to save
+                result = new MHPage(ID, first, last);
+                PageViewGUI.main(result);
+                this.dispose();
+            } else {
+                //page missing, create it if desired   
+                JOptionPane.showMessageDialog(this, "ID/First/Last name not found in database", "Patient Not Found", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
     private boolean isAlpha(char c) {
         return "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".indexOf(c) != -1;
     }
